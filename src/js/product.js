@@ -1,18 +1,39 @@
-import { getParam } from './utils.mjs';
-import ProductData from './ProductData.mjs';
+import ProductData from "./ProductData.mjs";
+import { setLocalStorage, loadHeaderFooter, qs, renderWithTemplate } from "./utils.mjs";
 
-const dataSource = new ProductData('tents');
-const productId = getParam('product');
+loadHeaderFooter();
 
-console.log(dataSource.findProductById(productId));
+// pegar o id do produto da URL
+const productId = new URLSearchParams(window.location.search).get("product");
 
-// add to cart button event handler
-async function addToCartHandler(e) {
-  const product = await dataSource.findProductById(e.target.dataset.id);
-  addProductToCart(product);
+// carregar dados do produto
+const dataSource = new ProductData("tents");
+
+// função para adicionar ao carrinho
+function addProductToCart(product) {
+  let cart = JSON.parse(localStorage.getItem("so-cart")) || [];
+  cart.push(product);
+  setLocalStorage("so-cart", cart);
 }
 
-// add listener to Add to Cart button
-document
-  .getElementById('addToCart')
-  .addEventListener('click', addToCartHandler);
+async function showProductDetails() {
+  const product = await dataSource.findProductById(productId);
+
+  // carregar template da página
+  const template = qs("#product-template");
+
+  // renderizar conteúdo
+  renderWithTemplate(
+    template,
+    qs(".product-detail"),
+    product,
+    () => {
+      // adicionar evento ao botão Add to Cart
+      qs("#addToCart").addEventListener("click", () => {
+        addProductToCart(product);
+      });
+    }
+  );
+}
+
+showProductDetails();
