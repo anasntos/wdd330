@@ -5,8 +5,8 @@ const display = document.getElementById("countdown");
 const startButton = document.getElementById("startButton");
 
 startButton.addEventListener("click", function () {
-  clearInterval(timer);   // garante que não cria dois timers
-  count = 10;             // reinicia contagem
+  clearInterval(timer); // garante que não cria dois timers
+  count = 10; // reinicia contagem
   display.textContent = count;
 
   timer = setInterval(() => {
