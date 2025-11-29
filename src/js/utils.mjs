@@ -22,8 +22,32 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-export function getParam(param) {
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  return urlParams.get(param);
+// render a template with data and insert it into a parent element
+export function renderWithTemplate(template, parent, data, callback) {
+  parent.innerHTML = "";
+  data.forEach(item => {
+    const clone = template.content.cloneNode(true);
+    if (callback) {
+      callback(clone, item);
+    }
+    parent.appendChild(clone);
+  });
+}
+
+
+export async function loadTemplate(path) {
+  const response = await fetch(path);
+  const template = await response.text();
+  return template;
+}
+
+export async function loadHeaderFooter() {
+  const header = await loadTemplate('/partials/header.html');
+  const footer = await loadTemplate('/partials/footer.html');
+
+  const headerElement = document.getElementById('main-header');
+  const footerElement = document.getElementById('main-footer');
+
+  renderWithTemplate(header, headerElement);
+  renderWithTemplate(footer, footerElement);
 }
