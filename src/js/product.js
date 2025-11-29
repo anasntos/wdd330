@@ -1,4 +1,4 @@
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import { setLocalStorage, loadHeaderFooter, qs, renderWithTemplate } from "./utils.mjs";
 
 loadHeaderFooter();
