@@ -37,3 +37,18 @@ async function showProductDetails() {
 }
 
 showProductDetails();
+
+const newsletterForm = document.querySelector("#newsletter-form");
+const message = document.querySelector("#newsletter-message");
+
+newsletterForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const email = document.querySelector("#newsletter-email").value;
+
+  message.textContent = "Thank you for subscribing!";
+  newsletterForm.reset();
+
+  // opcional: salvar no localStorage
+  localStorage.setItem("newsletterEmail", email);
+});
